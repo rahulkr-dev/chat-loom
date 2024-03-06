@@ -1,0 +1,16 @@
+{
+  "name": "chat-loom",
+  "version": "1.0.0",
+  "description": "Add\tCreate a capability e.g. feature, test, dependency.\r Cut\tRemove a capability e.g. feature, test, dependency.\r Fix\tFix an issue e.g. bug, typo, accident, misstatement.\r Bump\tIncrease the version of something e.g. dependency.\r Make\tChange the build process, or tooling, or infra.\r Start\tBegin doing something; e.g. create a feature flag.\r Stop\tEnd doing something; e.g. remove a feature flag.\r Refactor\tA code change that MUST be just a refactoring.\r Reformat\tRefactor of formatting, e.g. omit whitespace.\r Optimize\tRefactor of performance, e.g. speed up code.\r Document\tRefactor of documentation, e.g. help files.",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
+  }
+}
