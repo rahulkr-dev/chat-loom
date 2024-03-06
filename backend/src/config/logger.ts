@@ -2,9 +2,6 @@ import winston from "winston";
 
 const logger = winston.createLogger({
     level: "info",
-    defaultMeta: {
-        serviceName: "catalog-service",
-    },
     format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.json(),
