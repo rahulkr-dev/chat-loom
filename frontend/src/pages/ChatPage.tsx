@@ -36,7 +36,7 @@ export function AvatarProfile({
 
 const ChatListWrapper = ({ chatList }: IChatListProps) => {
   return (
-    <ScrollArea className=" px-2 h-[calc(100vh-4rem)] ">
+    <ScrollArea className=" px-2 h-[calc(100vh-5px)] ">
       {chatList.map((chat, index) => {
         return <ChatListItem key={index} chat={chat} />;
       })}
@@ -74,7 +74,7 @@ const ChatListItem = ({ chat }: { chat: IChatObj }) => {
 
 const ChatBody = () => {
   return (
-    <ScrollArea className="px-12 h-[calc(100vh-11rem)]">
+    <ScrollArea className="px-12 h-[calc(100vh-9rem)]">
       <div className="flex flex-col gap-3">
       {chatMsg.map((chat, index) => {
         return (
