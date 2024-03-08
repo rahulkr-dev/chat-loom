@@ -3,7 +3,7 @@ import http from "http";
 import app from "./app";
 import logger from "./config/logger";
 import { initDb } from "./config/db";
-import SocketService from "./service/socket-service";
+import SocketService from "./socket/socket-service";
 
 const socketService = new SocketService();
 
