@@ -14,6 +14,7 @@ const startServer = async () => {
         socketService.io.attach(httpServer);
         await initDb();
         logger.info("Database connected successfully");
+        socketService.initListners();
 
         httpServer.listen(PORT, () => logger.info(`Listening on port ${PORT}`));
     } catch (err: unknown) {

@@ -1,7 +1,12 @@
 import { Server } from "socket.io";
 
+// interface IconnectedUser{
+//     socketId:string,
+//     userId:string
+// }
 class SocketService {
     private _io: Server;
+    private _connectedUser: string[];
     constructor() {
         // eslint-disable-next-line no-console
         console.log("Init socket service");
@@ -11,6 +16,7 @@ class SocketService {
                 origin: "*",
             },
         });
+        this._connectedUser = [];
     }
 
     public initListners() {
@@ -18,6 +24,7 @@ class SocketService {
         io.on("connection", (socket) => {
             // eslint-disable-next-line no-console
             console.log("New connection", socket.id);
+            this._connectedUser.push(socket.id);
         });
     }
 
