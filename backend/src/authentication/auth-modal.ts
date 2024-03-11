@@ -1,15 +1,9 @@
 import { Schema, model } from "mongoose";
-
-interface Iuser {
-    userId: string;
-    name: string;
-    email: string;
-    password: string;
-}
+import { Iuser } from "./auth-types";
 
 const userSchema = new Schema<Iuser>(
     {
-        userId: {
+        username: {
             type: String,
             required: true,
             unique: true,
