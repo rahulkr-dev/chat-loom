@@ -21,7 +21,7 @@ const SocketProvider = ({children}:{children:React.ReactNode}) => {
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        const socket = io(import.meta.env.VITE_APP_SOCKET_URL!);
+        const socket = io(import.meta.env.VITE_BACKEND_API_URL!);
         setSocket(socket);
         setIsConnected(true);
     }, []);
