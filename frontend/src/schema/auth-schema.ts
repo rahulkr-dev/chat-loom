@@ -7,3 +7,8 @@ export const singupSchema = z.object({
         password: z.string().min(5, { message: "password must be 6 character." }),
         name: z.string().min(1, { message: "name is required." }),
 });
+
+export const loginSchema  =z.object({
+        email: z.string().email({ message: "email is required." }),
+        password: z.string().min(5, { message: "password must be 6 character." }),
+})

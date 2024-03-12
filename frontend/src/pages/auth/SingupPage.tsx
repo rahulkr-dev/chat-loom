@@ -19,8 +19,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { singupMtFn } from "@/http/api";
 import { singupSchema } from "@/schema/auth-schema";
+import { Tsignup } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -36,11 +37,22 @@ const ErrorMessage = ({ error }: { error: string }) => {
   );
 };
 
+const signup = async(payload:Tsignup)=>{
+  const {data} = await singupMtFn(payload)
+  return data
+}
+
 const SignupPage = () => {
+  const queryClient = useQueryClient()
   const { mutate } = useMutation({
-    mutationFn: singupMtFn,
+    mutationFn: signup,
+    onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey:["auth/self"]})
+
+    }
   });
   // todo - server error message
+  
  
   const form = useForm<z.infer<typeof singupSchema>>({
     resolver: zodResolver(singupSchema),
