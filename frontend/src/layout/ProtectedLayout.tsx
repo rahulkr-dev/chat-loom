@@ -1,6 +1,11 @@
-import { Outlet } from 'react-router-dom'
+import { useAuthStore } from '@/useAuthStore'
+import { Navigate, Outlet } from 'react-router-dom'
 
 const ProtectedLayout = () => {
+  const {auth} = useAuthStore()
+  if(!auth){
+    return <Navigate to={'/login'} />
+  }
   return (
     <Outlet />
   )
