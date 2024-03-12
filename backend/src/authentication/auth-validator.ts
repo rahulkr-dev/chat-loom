@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-export default [
+export const singupValidator = [
     body("name")
         .exists()
         .notEmpty()
@@ -14,4 +14,9 @@ export default [
         .withMessage("Password is required")
         .isLength({ min: 6 })
         .withMessage("Password must be at least 6 characters long"),
+];
+
+export const loginValidator = [
+    body("email").isEmail().withMessage("email is required").toLowerCase(),
+    body("password").exists().withMessage("password is required"),
 ];

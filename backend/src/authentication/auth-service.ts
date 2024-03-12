@@ -11,6 +11,9 @@ class AuthService {
     async getUserByUsername(username: string) {
         return await User.findOne({ username });
     }
+    async getUserById(id: string) {
+        return await User.findById(id, { password: 0 });
+    }
 }
 
 export default AuthService;
