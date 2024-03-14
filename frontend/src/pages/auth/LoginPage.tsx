@@ -1,4 +1,4 @@
-import { CardWrapper } from "@/components/card-wrapper";
+import { AuthCardWrapper } from "@/components/auth/auth-card-wrapper";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,15 +17,23 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
+import { AuthWrapper } from "@/pages/auth/auth-wrapper";
+import { AuthButton } from "@/components/auth/auth-button";
+import { FormError } from "@/components/form-error";
+import { getErrorMessage } from "@/lib/utils";
+import { AxiosError } from "axios";
+import { useMemo } from "react";
 
 const login = async (payload: Tlogin) => {
   const { data } = await loginMtFn(payload);
   return data;
 };
 
+
+
 const LoginPage = () => {
   const queryClient = useQueryClient();
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending,error } = useMutation({
     mutationFn: login,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth/self"] });
@@ -34,7 +42,9 @@ const LoginPage = () => {
       console.log(error, "error");
     },
   });
-  // todo - server error message
+
+  const serverError = useMemo(() => getErrorMessage(error as AxiosError), [error]);
+
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -48,56 +58,58 @@ const LoginPage = () => {
     mutate(values);
   };
   return (
-    <CardWrapper
-      headerLabel="Welcome back"
-      backButtonLabel="Don't have an account?"
-      backButtonHref="/signup"
-    >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-3">
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormItem>Email</FormItem>
-                  <FormControl>
-                    <Input type="email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                  <Button
-                    size="sm"
-                    variant="link"
-                    asChild
-                    className="px-0 font-normal"
-                  >
-                    <Link to="/reset">Forgot password?</Link>
-                  </Button>
-                </FormItem>
-              )}
-            />
-          </div>
+    <AuthWrapper>
+      <AuthCardWrapper
+        authLable="Welcome back to our community!"
+        backButtonLabel="Don't have an account?"
+        backButtonHref="/signup"
+        authTitle="Chat Loom"
+      >
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-3">
+              <FormError message={serverError} />
+              <FormField
+                name="email"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormItem>Email</FormItem>
+                    <FormControl>
+                      <Input type="email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="password"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    <Button
+                      size="sm"
+                      variant="link"
+                      asChild
+                      className="px-0 font-normal"
+                    >
+                      <Link to="/reset">Forgot password?</Link>
+                    </Button>
+                  </FormItem>
+                )}
+              />
+            </div>
 
-          <Button disabled={isPending} type="submit" className="w-full">
-            Login
-          </Button>
-        </form>
-      </Form>
-    </CardWrapper>
+            <AuthButton isPending={isPending} buttonLabel="Login" />
+          </form>
+        </Form>
+      </AuthCardWrapper>
+    </AuthWrapper>
   );
 };
 

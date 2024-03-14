@@ -5,25 +5,28 @@ import {
   CardHeader
 } from "@/components/ui/card";
 import { BackButton } from "@/components/back-button";
-import { Header } from "./header";
+import { AuthHeader } from "@/components/auth/auth-header";
 
 interface CardWrapperProps {
   children: React.ReactNode;
-  headerLabel: string;
+  authLable: string;
+  authTitle:string,
   backButtonLabel: string;
   backButtonHref: string;
+
 }
 
-export const CardWrapper = ({
+export const AuthCardWrapper = ({
   children,
-  headerLabel,
+  authLable,
   backButtonLabel,
   backButtonHref,
+  authTitle
 }: CardWrapperProps) => {
   return (
     <Card className="w-[400px] shadow-md">
       <CardHeader>
-        <Header label={headerLabel} />
+        <AuthHeader label={authLable} title={authTitle} />
       </CardHeader>
       <CardContent>
         {children}

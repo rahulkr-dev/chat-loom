@@ -2,10 +2,12 @@ import { cn } from "@/lib/utils";
 
 
 interface HeaderProps {
+  title:string,
   label: string;
 }
 
-export const Header = ({
+export const AuthHeader = ({
+  title,
   label,
 }: HeaderProps) => {
   return (
@@ -13,7 +15,7 @@ export const Header = ({
       <h1 className={cn(
         "text-3xl font-semibold",
       )}>
-        🔐 Auth
+        🔏 {title}
       </h1>
       <p className="text-muted-foreground text-sm">
         {label}

@@ -9,3 +9,7 @@ export type Tsignup = {
     name:string,
     username:string
 }
+
+export interface IBackendError {
+    errors: Array<{ msg: string; path: string }>;
+  }
