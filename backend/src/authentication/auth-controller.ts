@@ -94,6 +94,11 @@ class AuthController {
             return next(createHttpError(401, ERROR_MESSAGES.unauthorized));
         return res.json({ user });
     };
+
+    logout = async (req: Request, res: Response) => {
+        res.clearCookie("cl_accessToken");
+        res.sendStatus(200);
+    };
 }
 
 export default AuthController;
