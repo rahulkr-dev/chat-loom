@@ -10,7 +10,7 @@ import {
 } from "./auth-types";
 import { CredentialService } from "../common/service/credential-service";
 import { TokenService } from "../common/service/token-service";
-
+import { ERROR_MESSAGES } from "../common/constants";
 class AuthController {
     constructor(
         private authService: AuthService,
@@ -28,17 +28,11 @@ class AuthController {
         const isUsernameExist =
             await this.authService.getUserByUsername(username);
         if (isUsernameExist)
-            return next(
-                createHttpError(400, "username exits choose a different one"),
-            );
+            return next(createHttpError(400, ERROR_MESSAGES.usernameExists));
         const isEmailExist = await this.authService.getUserByEmail(email);
         if (isEmailExist)
-            return next(
-                createHttpError(
-                    400,
-                    "Email already exist choose a different one",
-                ),
-            );
+            return next(createHttpError(400, ERROR_MESSAGES.emailExists));
+
         const hash = await this.credentialService.convertToHash(password);
         const user = await this.authService.create({
             name,
@@ -50,8 +44,6 @@ class AuthController {
             sub: user._id.toString(),
         };
 
-        // save data in DB
-        // create axios token
         const accessToken = this.tokenService.generateAccessToken(payload);
         res.cookie("cl_accessToken", accessToken, {
             httpOnly: true,
@@ -69,12 +61,18 @@ class AuthController {
         }
         const { email, password } = req.body as TloginPayload;
         const user = await this.authService.getUserByEmail(email);
-        if (!user) return next(createHttpError(400, "Invalid credential"));
+        if (!user)
+            return next(
+                createHttpError(400, ERROR_MESSAGES.invalidCredentials),
+            );
         const isMatch = await this.credentialService.comparePassword(
             password,
             user.password,
         );
-        if (!isMatch) return next(createHttpError(400, "Invalid credential"));
+        if (!isMatch)
+            return next(
+                createHttpError(400, ERROR_MESSAGES.invalidCredentials),
+            );
 
         const payload: IjwtPayload = {
             sub: user._id.toString(),
@@ -92,7 +90,8 @@ class AuthController {
     self = async (req: IrequestWithAuth, res: Response, next: NextFunction) => {
         const auth = req.auth as IjwtPayload;
         const user = await this.authService.getUserById(auth.sub);
-        if (!user) return next(createHttpError(401, "unauthorize"));
+        if (!user)
+            return next(createHttpError(401, ERROR_MESSAGES.unauthorized));
         return res.json({ user });
     };
 }
