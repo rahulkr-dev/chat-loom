@@ -1,3 +1,4 @@
+import { ChatPageSkeleton } from "@/components/skeleton/chat-skeleton";
 import { useSelf } from "@/lib/query/auth-query";
 import { useAuthStore } from "@/useAuthStore";
 import { useEffect } from "react";
@@ -13,7 +14,7 @@ const RootLayout = () => {
     if (data) add(data);
   }, [data, add,isFetching]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <ChatPageSkeleton />
   return <Outlet />
 };
 
