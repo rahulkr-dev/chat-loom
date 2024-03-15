@@ -1,30 +1,17 @@
-import { selfQFn } from "@/http/api";
+import { useSelf } from "@/lib/query/auth-query";
 import { useAuthStore } from "@/useAuthStore";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
-const getSelf = async () => {
-  const { data } = await selfQFn();
-  return data;
-};
 
 const RootLayout = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["auth/self"],
-    queryFn: getSelf,
-    retry: (failureCount: number, error) => {
-      if (error instanceof AxiosError && error.response?.status === 401) {
-          return false;
-      }
-      return failureCount < 3;
-  },
-  });
+  const { data, isLoading,isFetching,isPending,} = useSelf()
   const { add } = useAuthStore();
+  console.log({data,isLoading,isFetching,isPending})
   useEffect(() => {
+    console.log("working or not")
     if (data) add(data);
-  }, [data, add]);
+  }, [data, add,isFetching]);
 
   if (isLoading) return <div>Loading...</div>;
   return <Outlet />

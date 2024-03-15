@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { chatList, chatMsg } from "./seed";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "@/components/mode-toggle";
+import Logout from "@/components/logout";
 
 interface IChatObj {
   profileImage: string;
@@ -15,6 +16,7 @@ interface IChatObj {
 interface IChatListProps {
   chatList: IChatObj[];
 }
+
 
 
 export function AvatarProfile({
@@ -111,6 +113,7 @@ const ChatHeader = ({
             {status ? "Online" : "Offline"}
           </div>
         </div>
+        <Logout />
         {/* todo - remove this mode toggle to layout */}
         <ModeToggle />
       </div>
