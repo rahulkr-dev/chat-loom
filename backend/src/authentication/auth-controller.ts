@@ -2,12 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
 import AuthService from "./auth-service";
-import {
-    IjwtPayload,
-    IrequestWithAuth,
-    Iuser,
-    TloginPayload,
-} from "./auth-types";
+import { IjwtPayload, IrequestWithAuth, Iuser, TloginPayload } from "./auth-types";
 import { CredentialService } from "../common/service/credential-service";
 import { TokenService } from "../common/service/token-service";
 import { ERROR_MESSAGES } from "../common/constants";
@@ -25,13 +20,10 @@ class AuthController {
             return next(createHttpError(400, result.array()[0].msg as string));
         }
         const { username, email, password, name } = req.body as Iuser;
-        const isUsernameExist =
-            await this.authService.getUserByUsername(username);
-        if (isUsernameExist)
-            return next(createHttpError(400, ERROR_MESSAGES.usernameExists));
+        const isUsernameExist = await this.authService.getUserByUsername(username);
+        if (isUsernameExist) return next(createHttpError(400, ERROR_MESSAGES.usernameExists));
         const isEmailExist = await this.authService.getUserByEmail(email);
-        if (isEmailExist)
-            return next(createHttpError(400, ERROR_MESSAGES.emailExists));
+        if (isEmailExist) return next(createHttpError(400, ERROR_MESSAGES.emailExists));
 
         const hash = await this.credentialService.convertToHash(password);
         const user = await this.authService.create({
@@ -40,9 +32,7 @@ class AuthController {
             email,
             password: hash,
         });
-        const payload: IjwtPayload = {
-            sub: user._id.toString(),
-        };
+        const payload: IjwtPayload = { sub: user._id.toString() };
 
         const accessToken = this.tokenService.generateAccessToken(payload);
         res.cookie("cl_accessToken", accessToken, {
@@ -61,22 +51,11 @@ class AuthController {
         }
         const { email, password } = req.body as TloginPayload;
         const user = await this.authService.getUserByEmail(email);
-        if (!user)
-            return next(
-                createHttpError(400, ERROR_MESSAGES.invalidCredentials),
-            );
-        const isMatch = await this.credentialService.comparePassword(
-            password,
-            user.password,
-        );
-        if (!isMatch)
-            return next(
-                createHttpError(400, ERROR_MESSAGES.invalidCredentials),
-            );
+        if (!user) return next(createHttpError(400, ERROR_MESSAGES.invalidCredentials));
+        const isMatch = await this.credentialService.comparePassword(password, user.password);
+        if (!isMatch) return next(createHttpError(400, ERROR_MESSAGES.invalidCredentials));
 
-        const payload: IjwtPayload = {
-            sub: user._id.toString(),
-        };
+        const payload: IjwtPayload = { sub: user._id.toString() };
         const accessToken = this.tokenService.generateAccessToken(payload);
         res.cookie("cl_accessToken", accessToken, {
             httpOnly: true,
@@ -90,8 +69,7 @@ class AuthController {
     self = async (req: IrequestWithAuth, res: Response, next: NextFunction) => {
         const auth = req.auth as IjwtPayload;
         const user = await this.authService.getUserById(auth.sub);
-        if (!user)
-            return next(createHttpError(401, ERROR_MESSAGES.unauthorized));
+        if (!user) return next(createHttpError(401, ERROR_MESSAGES.unauthorized));
         return res.json({ user });
     };
 
