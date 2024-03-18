@@ -12,17 +12,9 @@ const authService = new AuthService();
 const credentialService = new CredentialService();
 const tokenService = new TokenService();
 
-const authController = new AuthController(
-    authService,
-    credentialService,
-    tokenService,
-);
+const authController = new AuthController(authService, credentialService, tokenService);
 
-authRouter.post(
-    "/signup",
-    singupValidator,
-    asyncWrapper(authController.singup),
-);
+authRouter.post("/signup", singupValidator, asyncWrapper(authController.singup));
 authRouter.post("/login", loginValidator, asyncWrapper(authController.login));
 authRouter.get("/self", authenticate, asyncWrapper(authController.self));
 authRouter.post("/logout", authenticate, asyncWrapper(authController.logout));

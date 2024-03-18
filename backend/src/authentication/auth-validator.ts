@@ -1,11 +1,7 @@
 import { body } from "express-validator";
 
 export const singupValidator = [
-    body("name")
-        .exists()
-        .notEmpty()
-        .withMessage("Name is required")
-        .toLowerCase(),
+    body("name").exists().notEmpty().withMessage("Name is required").toLowerCase(),
     body("email").isEmail().withMessage("Email is required").toLowerCase(),
     body("username").exists().notEmpty().withMessage("Username is required"),
     body("password")

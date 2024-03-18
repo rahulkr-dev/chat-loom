@@ -6,18 +6,12 @@ import { ERROR_MESSAGES } from "../constants";
 
 const tokenService = new TokenService();
 
-const authenticate = (
-    req: IrequestWithAuth,
-    res: Response,
-    next: NextFunction,
-) => {
+const authenticate = (req: IrequestWithAuth, res: Response, next: NextFunction) => {
     try {
         const accessToken = req.cookies.cl_accessToken;
-        if (!accessToken)
-            return next(createHttpError(401, ERROR_MESSAGES.unauthorized));
+        if (!accessToken) return next(createHttpError(401, ERROR_MESSAGES.unauthorized));
         const payload = tokenService.verifyAccessToken(accessToken);
-        if (!payload)
-            return next(createHttpError(401, ERROR_MESSAGES.unauthorized));
+        if (!payload) return next(createHttpError(401, ERROR_MESSAGES.unauthorized));
 
         req.auth = payload as IjwtPayload;
         next();
