@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  web:
+    depends_on:
+      - api
+    restart: on-failure
+    build:
+      context: ./frontend
+      dockerfile: ./docker/dev/Dockerfile
+    hostname: web
+    ports:
+      - 8000:5173
+
+    # this is for docker compose watch mode
+    develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend/package-lock.json
+          action: rebuild
+        - path: ./frontend
+          target: /app
+          action: sync
+  api:
+    restart: on-failure
+    build:
+      context: ./backend
+      dockerfile: ./docker/dev/Dockerfile
+    hostname: api
+    ports:
+      - 8001:8080
+
+    # docker compose watch mode for development
+    develop:
+      watch:
+        - path: ./backend
+          action: rebuild
+        - path: ./backend
+          action: rebuild
+        - path: ./backend
+          target: /app
+          action: sync
+  # nginx:
+  #   build: ./nginx
+  #   ports:
+  #   - '80:80'
+  #   depends_on:
+  #   - web
+  #   - api
+
+
