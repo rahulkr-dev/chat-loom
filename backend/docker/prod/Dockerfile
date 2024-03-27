@@ -21,7 +21,10 @@ COPY package*.json ./
 
 RUN npm ci --ignore-scripts
 
+
 COPY --from=builder /app/dist ./
+
+COPY --from=builder /app/config ./config
 
 EXPOSE 5500
 

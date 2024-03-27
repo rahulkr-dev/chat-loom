@@ -17,10 +17,10 @@ services:
     restart: on-failure
     build:
       context: ./frontend
-      dockerfile: ./docker/dev/Dockerfile
+      dockerfile: ./docker/prod/Dockerfile
     hostname: web
-    ports:
-      - 8000:5173
+    # ports:
+    #   - 80:80
     environment:
       - VITE_BACKEND_API_URL=http://localhost
     # this is for docker compose watch mode
@@ -37,10 +37,10 @@ services:
     restart: on-failure
     build:
       context: ./backend
-      dockerfile: ./docker/dev/Dockerfile
+      dockerfile: ./docker/prod/Dockerfile
     hostname: api
-    ports:
-      - 8001:8080
+    # ports:
+    #   - 8001:8080
 
     # docker compose watch mode for development
     develop:
