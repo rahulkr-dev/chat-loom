@@ -12,7 +12,7 @@ app.use(cors({ origin: [config.get("frontend.url")], credentials: true }));
 
 app.use("/api/auth", authRouter);
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/api/test", (req: Request, res: Response) => {
     res.json({ message: "Hello from Chat loom!" });
 });
 
