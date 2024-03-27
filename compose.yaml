@@ -21,7 +21,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email rkrahul8181@gmail.com  -d graycode.site --agree-tos
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email rkrahul8181@gmail.com -d graycode.site --agree-tos
   
   web:
     depends_on:
