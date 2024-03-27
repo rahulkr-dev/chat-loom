@@ -1,6 +1,16 @@
 version: "3.8"
 
 services:
+  nginx:
+    image: nginx:1.17.10
+    ports:
+    - 80:80
+    depends_on:
+    - web
+    - api
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    
   web:
     depends_on:
       - api
@@ -11,7 +21,8 @@ services:
     hostname: web
     ports:
       - 8000:5173
-
+    environment:
+      - VITE_BACKEND_API_URL=http://localhost
     # this is for docker compose watch mode
     develop:
       watch:
@@ -41,12 +52,6 @@ services:
         - path: ./backend
           target: /app
           action: sync
-  # nginx:
-  #   build: ./nginx
-  #   ports:
-  #   - '80:80'
-  #   depends_on:
-  #   - web
-  #   - api
+
 
 
