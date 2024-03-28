@@ -31,8 +31,8 @@ services:
       context: ./frontend
       dockerfile: ./docker/prod/Dockerfile
     hostname: web
-    # ports:
-    #   - 80:80
+    ports:
+      - 80:80
     environment:
       - VITE_BACKEND_API_URL=http://localhost
     # this is for docker compose watch mode
