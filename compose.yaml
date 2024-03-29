@@ -24,8 +24,8 @@ services:
     command: certonly --webroot -w /var/www/certbot --force-renewal --email rkrahul8181@gmail.com -d graycode.site --agree-tos
   
   web:
-    depends_on:
-      - api
+    # depends_on:
+    #   - api
     restart: on-failure
     build:
       context: ./frontend
