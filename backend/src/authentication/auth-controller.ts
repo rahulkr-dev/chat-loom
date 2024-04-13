@@ -77,6 +77,15 @@ class AuthController {
         res.clearCookie("cl_accessToken");
         res.sendStatus(200);
     };
+
+    getUsers = async (req: Request, res: Response) => {
+        const { q = "", page, limit } = req.query;
+        const users = await this.authService.getUsers(q as string, {
+            page: page ? parseInt(page as string) : 1,
+            limit: limit ? parseInt(limit as string) : 10,
+        });
+        res.json(users);
+    };
 }
 
 export default AuthController;

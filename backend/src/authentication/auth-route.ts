@@ -19,4 +19,6 @@ authRouter.post("/login", loginValidator, asyncWrapper(authController.login));
 authRouter.get("/self", authenticate, asyncWrapper(authController.self));
 authRouter.post("/logout", authenticate, asyncWrapper(authController.logout));
 
+authRouter.get("/users", authenticate, asyncWrapper(authController.getUsers));
+
 export default authRouter;

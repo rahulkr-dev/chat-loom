@@ -25,3 +25,8 @@ export interface IrequestWithAuth extends Request {
     auth?: IjwtPayload;
     cookies: Icookie;
 }
+
+export type TpagenateQuery = {
+    page: number;
+    limit: number;
+};
