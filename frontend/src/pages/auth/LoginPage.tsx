@@ -1,4 +1,4 @@
-import { AuthCardWrapper } from "@/components/auth/auth-card-wrapper";
+import { AuthCardWrapper } from "@/pages/auth/component/auth-card-wrapper";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,15 +10,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { loginMtFn } from "@/http/api";
-import { loginSchema } from "@/schema/auth-schema";
-import { Tlogin } from "@/types";
+import { loginSchema } from "@/pages/auth/schema/auth-schema";
+import { Tlogin } from "@/pages/auth/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { AuthWrapper } from "@/pages/auth/auth-wrapper";
-import { AuthButton } from "@/components/auth/auth-button";
+import { AuthWrapper } from "@/pages/auth/component/auth-wrapper";
+import { AuthButton } from "@/pages/auth/component/auth-button";
 import { FormError } from "@/components/form-error";
 import { getErrorMessage } from "@/lib/utils";
 import { AxiosError } from "axios";

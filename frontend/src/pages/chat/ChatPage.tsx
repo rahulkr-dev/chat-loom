@@ -1,10 +1,20 @@
-import { Send,Smile } from "lucide-react";
+import { Search, Send, Smile } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { chatList, chatMsg } from "./seed";
+import { chatList, chatMsg } from "../seed";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "@/components/mode-toggle";
 import Logout from "@/components/logout";
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 interface IChatObj {
   profileImage: string;
@@ -16,8 +26,6 @@ interface IChatObj {
 interface IChatListProps {
   chatList: IChatObj[];
 }
-
-
 
 export function AvatarProfile({
   src,
@@ -31,17 +39,72 @@ export function AvatarProfile({
   return (
     <Avatar>
       <AvatarImage src={src} alt={alt} />
-      <AvatarFallback>{fallback.slice(0,2)}</AvatarFallback>
+      <AvatarFallback>{fallback.slice(0, 2)}</AvatarFallback>
     </Avatar>
   );
 }
 
+
+const ChatSearch = () => {
+
+
+
+  // const onSubmit = (values:ChatSearchType)=>{
+  //   console.log(values)
+  // }
+
+  function debounce = (cb){
+    
+  }
+
+  const handleSearch = debounce((text:string)=>{
+    console.log(text)
+  })
+
+  
+
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
+    const {target:{value}} = e
+    console.log(value,"value")
+
+    handleSearch(value)
+  }
+ 
+
+
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="w-full flex justify-start gap-4" variant="outline">
+          <Search />
+          Search user
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md ">
+         <Input type="search" onChange={handleChange} />
+       
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const ChatListWrapper = ({ chatList }: IChatListProps) => {
   return (
     <ScrollArea className=" px-2 h-[calc(100vh-5px)] ">
-      {chatList.map((chat, index) => {
-        return <ChatListItem key={index} chat={chat} />;
-      })}
+      <div>
+        <ChatSearch />
+        {chatList.map((chat, index) => {
+          return <ChatListItem key={index} chat={chat} />;
+        })}
+      </div>
     </ScrollArea>
   );
 };
@@ -57,18 +120,21 @@ const ChatListItem = ({ chat }: { chat: IChatObj }) => {
       </div>
       <div className="col-span-7">
         <div className="font-semibold">{chat.username}</div>
-        <div>{chat.lastMessage.length>19?chat.lastMessage.slice(0,18): chat.lastMessage}</div>
+        <div>
+          {chat.lastMessage.length > 19
+            ? chat.lastMessage.slice(0, 18)
+            : chat.lastMessage}
+        </div>
       </div>
       <div className="col-span-3 flex flex-col gap-2">
-        <div className="text-[11px] text-end text-ring font-semibold">{chat.lastDate}</div>
-        {
-          Number(chat.notification) > 0 && (
-            <div className="w-4 self-end p-3 text-end h-4 rounded-full text-primary bg-primary-foreground  flex justify-center items-center">
+        <div className="text-[11px] text-end text-ring font-semibold">
+          {chat.lastDate}
+        </div>
+        {Number(chat.notification) > 0 && (
+          <div className="w-4 self-end p-3 text-end h-4 rounded-full text-primary bg-primary-foreground  flex justify-center items-center">
             {chat.notification}
           </div>
-          )
-        }
-      
+        )}
       </div>
     </div>
   );
@@ -78,18 +144,17 @@ const ChatBody = () => {
   return (
     <ScrollArea className="px-12 h-[calc(100vh-9rem)]">
       <div className="flex flex-col gap-3">
-      {chatMsg.map((chat, index) => {
-        return (
-          <Chat
-            key={index}
-            type={chat.type}
-            text={chat.text}
-            createdAt={chat.createdAt}
-          />
-        );
-      })}
+        {chatMsg.map((chat, index) => {
+          return (
+            <Chat
+              key={index}
+              type={chat.type}
+              text={chat.text}
+              createdAt={chat.createdAt}
+            />
+          );
+        })}
       </div>
-      
     </ScrollArea>
   );
 };
@@ -123,16 +188,20 @@ const ChatHeader = ({
 const Chat = ({
   type,
   text,
-  // createdAt,
-}: {
+}: // createdAt,
+{
   type: string;
   text: string;
   createdAt: string;
 }) => {
   const isSentMsg = type == "sent";
   return (
-    <div className={cn("w-max",{"self-end ":isSentMsg})}>
-      <div className={cn("py-2 px-4 bg-muted  text-sm rounded-xl",{"bg-primary  text-primary-foreground":isSentMsg})}>
+    <div className={cn("w-max", { "self-end ": isSentMsg })}>
+      <div
+        className={cn("py-2 px-4 bg-muted  text-sm rounded-xl", {
+          "bg-primary  text-primary-foreground": isSentMsg,
+        })}
+      >
         {text}
       </div>
       {/* <div className="text-xs text-gray-500">{createdAt.slice(0, 10)}</div> */}

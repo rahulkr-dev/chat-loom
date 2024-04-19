@@ -1,5 +1,5 @@
 import { api } from "./axios-client";
-import { Tlogin, Tsignup } from "@/types";
+import { Tlogin, Tsignup } from "@/pages/auth/types";
 
 
 // Authenticatio

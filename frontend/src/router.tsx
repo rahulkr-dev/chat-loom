@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 // todo - import as lazy
-import ChatPage from "./pages/ChatPage";
+import ChatPage from "./pages/chat/ChatPage";
 import RootLayout from "./layout/RootLayout";
 import AuthLayout from "./layout/AuthLayout";
 import LoginPage from "./pages/auth/LoginPage";

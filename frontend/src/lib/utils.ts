@@ -1,4 +1,4 @@
-import { IBackendError } from "@/types";
+import { IBackendError } from "@/pages/auth/types";
 import { AxiosError } from "axios";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
