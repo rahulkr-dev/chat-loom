@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  nginx:
+    restart: unless-stopped
+    image: nginx:1.17.10
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - web
+      - api
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+  web:
+    depends_on:
+      - api
+    restart: on-failure
+    build:
+      context: ./frontend
+      dockerfile: ./docker/dev/Dockerfile
+    hostname: web
+    environment:
+      - VITE_BACKEND_API_URL=http://localhost
+    # this is for docker compose watch mode
+    develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend/package-lock.json
+          action: rebuild
+        - path: ./frontend
+          target: /app
+          action: sync
+  api:
+    restart: on-failure
+    build:
+      context: ./backend
+      dockerfile: ./docker/dev/Dockerfile
+    hostname: api
+
+    # docker compose watch mode for development
+    develop:
+      watch:
+        - path: ./backend
+          action: rebuild
+        - path: ./backend
+          action: rebuild
+        - path: ./backend
+          target: /app
+          action: sync
