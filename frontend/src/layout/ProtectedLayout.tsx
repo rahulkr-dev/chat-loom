@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/useAuthStore'
+import { useAuthStore } from '@/store/useAuthStore'
 import { Navigate, Outlet } from 'react-router-dom'
 
 const ProtectedLayout = () => {
