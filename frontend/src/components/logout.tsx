@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { logoutMFn } from "@/http/api";
-import { useAuthStore } from "@/useAuthStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Logout = () => {
   const { logout } = useAuthStore();
