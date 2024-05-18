@@ -40,7 +40,7 @@ class AuthService {
             .limit(limit);
 
         return {
-            data: users,
+            users,
             totalUsers,
             limit,
             currentPage: page,
